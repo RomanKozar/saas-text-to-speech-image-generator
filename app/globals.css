@@ -16,7 +16,7 @@ html {
 	background-color: #101114;
 }
 
-/* @layer utilities {
+@layer utilities {
 	.input-class {
 		@apply text-base placeholder:text-base bg-black-1 rounded-[6px] placeholder:text-gray-1 text-white-1 border-none;
 	}
@@ -65,7 +65,7 @@ html {
 	.text-32 {
 		@apply text-[32px] leading-normal;
 	}
-} */
+}
 
 /*кастомні класи*/
 
