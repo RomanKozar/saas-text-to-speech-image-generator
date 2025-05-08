@@ -1,5 +1,52 @@
-import { v } from 'convex/values'
-import { internalMutation } from './_generated/server'
+import { ConvexError, v } from 'convex/values'
+
+import { internalMutation, query } from './_generated/server'
+
+export const getUserById = query({
+	args: { clerkId: v.string() },
+	handler: async (ctx, args) => {
+		const user = await ctx.db
+			.query('users')
+			.filter(q => q.eq(q.field('clerkId'), args.clerkId))
+			.unique()
+
+		if (!user) {
+			throw new ConvexError('User not found')
+		}
+
+		return user
+	},
+})
+
+// цей запит використовується для того, щоб отримати топ-користувача за кількістю подкастів. спочатку подкаст сортується за переглядами, а потім користувач сортується за загальною кількістю подкастів, тому користувач з найбільшою кількістю подкастів буде на вершині.
+export const getTopUserByPodcastCount = query({
+	args: {},
+	handler: async (ctx, args) => {
+		const user = await ctx.db.query('users').collect()
+
+		const userData = await Promise.all(
+			user.map(async u => {
+				const podcasts = await ctx.db
+					.query('podcasts')
+					.filter(q => q.eq(q.field('authorId'), u.clerkId))
+					.collect()
+
+				const sortedPodcasts = podcasts.sort((a, b) => b.views - a.views)
+
+				return {
+					...u,
+					totalPodcasts: podcasts.length,
+					podcast: sortedPodcasts.map(p => ({
+						title: p.title,
+						pocastId: p._id,
+					})),
+				}
+			})
+		)
+
+		return userData.sort((a, b) => b.totalPodcasts - a.totalPodcasts)
+	},
+})
 
 export const createUser = internalMutation({
 	args: {
@@ -15,5 +62,57 @@ export const createUser = internalMutation({
 			imageUrl: args.imageUrl,
 			name: args.name,
 		})
+	},
+})
+
+export const updateUser = internalMutation({
+	args: {
+		clerkId: v.string(),
+		imageUrl: v.string(),
+		email: v.string(),
+	},
+	async handler(ctx, args) {
+		const user = await ctx.db
+			.query('users')
+			.filter(q => q.eq(q.field('clerkId'), args.clerkId))
+			.unique()
+
+		if (!user) {
+			throw new ConvexError('User not found')
+		}
+
+		await ctx.db.patch(user._id, {
+			imageUrl: args.imageUrl,
+			email: args.email,
+		})
+
+		const podcast = await ctx.db
+			.query('podcasts')
+			.filter(q => q.eq(q.field('authorId'), args.clerkId))
+			.collect()
+
+		await Promise.all(
+			podcast.map(async p => {
+				await ctx.db.patch(p._id, {
+					authorImageUrl: args.imageUrl,
+				})
+			})
+		)
+	},
+})
+
+export const deleteUser = internalMutation({
+	args: { clerkId: v.string() },
+	async handler(ctx, args) {
+		const user = await ctx.db
+			.query('users')
+			.filter(q => q.eq(q.field('clerkId'), args.clerkId))
+			.unique()
+
+		if (!user) {
+			throw new ConvexError('User not found')
+		}
+
+		await ctx.db.delete(user._id)
 	},
 })
