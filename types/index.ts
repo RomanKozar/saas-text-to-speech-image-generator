@@ -30,14 +30,15 @@ export interface PodcastProps {
 	_creationTime: number
 	audioStorageId: Id<'_storage'> | null
 	userId: Id<'users'>
-	title: string
 	description: string
+	podcastTitle: string
+	podcastDescription: string
 	audioUrl: string | null
 	imageUrl: string | null
 	imageStorageId: Id<'_storage'> | null
-	// author: string;
-	// authorId: string;
-	// authorImageUrl: string;
+	author: string
+	authorId: string
+	authorImageUrl: string
 	voicePrompt: string
 	imagePrompt: string | null
 	voiceType: string
@@ -83,6 +84,7 @@ export interface LatestPodcastCardProps {
 
 export interface PodcastDetailPlayerProps {
 	audioUrl: string
+	podcastTitle: string
 	title: string
 	author: string
 	isOwner: boolean

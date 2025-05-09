@@ -32,6 +32,8 @@ import GenerateThumbnail from '@/components/GenerateThumbnail'
 import { Loader } from 'lucide-react'
 import { Id } from '@/convex/_generated/dataModel'
 
+import { VoiceType } from '@/types'
+
 const voiceCategories = ['alloy', 'shimmer', 'nova', 'echo', 'fable', 'onyx']
 
 const formSchema = z.object({
@@ -56,7 +58,7 @@ const CreatePodcast = () => {
 	const [voicePrompt, setVoicePrompt] = useState('')
 
 	const [isSubmitting, setIsSubmitting] = useState(false)
-	// 1. Define your form.
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -65,10 +67,7 @@ const CreatePodcast = () => {
 		},
 	})
 
-	// 2. Define a submit handler.
 	function onSubmit(values: z.infer<typeof formSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
 		console.log(values)
 	}
 
@@ -159,9 +158,9 @@ const CreatePodcast = () => {
 					</div>
 					<div className='flex flex-col pt-10'>
 						<GeneratePodcast
-							setAutioStorageId={setAudioStorageId}
+							setAudioStorageId={setAudioStorageId}
 							setAudio={setAudioUrl}
-							voiceType={voiceType}
+							voiceType={voiceType as VoiceType}
 							audio={audioUrl}
 							voicePrompt={voicePrompt}
 							setVoicePrompt={setVoicePrompt}
