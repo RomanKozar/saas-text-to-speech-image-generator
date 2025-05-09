@@ -88,7 +88,7 @@ const CreatePodcast = () => {
 							render={({ field }) => (
 								<FormItem className='flex flex-col gap-2.5'>
 									<FormLabel className='text-16 font-bolt text-white-1'>
-										Username
+										Title
 									</FormLabel>
 									<FormControl>
 										<Input
@@ -158,7 +158,15 @@ const CreatePodcast = () => {
 						/>
 					</div>
 					<div className='flex flex-col pt-10'>
-						<GeneratePodcast />
+						<GeneratePodcast
+							setAutioStorageId={setAudioStorageId}
+							setAudio={setAudioUrl}
+							voiceType={voiceType}
+							audio={audioUrl}
+							voicePrompt={voicePrompt}
+							setVoicePrompt={setVoicePrompt}
+							setAudioDuration={setAudioDuration}
+						/>
 
 						<GenerateThumbnail />
 
