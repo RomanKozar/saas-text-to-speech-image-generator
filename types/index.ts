@@ -51,7 +51,7 @@ export interface ProfilePodcastProps {
 	listeners: number
 }
 
-export type VoiceType = 'alloy' | 'echo' | 'fable' | 'onyx' | 'nova' | 'shimmer'
+export type VoiceType = 'en-US-Wavenet-D' | 'en-US-Wavenet-F'
 
 export interface GeneratePodcastProps {
 	voiceType: VoiceType

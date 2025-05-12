@@ -3,7 +3,7 @@
 const authConfig = {
 	providers: [
 		{
-			domain: 'https://sensible-insect-91.clerk.accounts.dev/',
+			domain: 'https://sensible-insect-91.clerk.accounts.dev',
 			applicationID: 'convex',
 		},
 	],
