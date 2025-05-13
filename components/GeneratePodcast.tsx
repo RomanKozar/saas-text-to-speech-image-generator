@@ -29,34 +29,28 @@ const useGeneratePodcast = ({
 		setIsGenerating(true)
 		setAudio('')
 
-		// Перевірка на пусте значення для voicePrompt
-		if (!voicePrompt || voicePrompt.trim().length === 0) {
+		if (!voicePrompt) {
 			toast({
-				title: 'Please provide a valid text to generate a podcast',
+				title: 'Please provide a voiceType to generate a podcast',
 			})
-			setIsGenerating(false)
-			return
+			return setIsGenerating(false)
 		}
 
 		try {
-			// Відправка запиту до API для генерації подкасту
 			const response = await getPodcastAudio({
 				voice: voiceType,
 				input: voicePrompt,
 			})
 
-			// Обробка аудіо файлу
 			const blob = new Blob([response], { type: 'audio/mpeg' })
 			const fileName = `podcast-${uuidv4()}.mp3`
 			const file = new File([blob], fileName, { type: 'audio/mpeg' })
 
-			// Завантаження аудіо
 			const uploaded = await startUpload([file])
 			const storageId = (uploaded[0].response as any).storageId
 
 			setAudioStorageId(storageId)
 
-			// Отримання URL для відтворення аудіо
 			const audioUrl = await getAudioUrl({ storageId })
 			setAudio(audioUrl!)
 			setIsGenerating(false)
@@ -95,7 +89,8 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
 			<div className='mt-5 w-full max-w-[200px]'>
 				<Button
 					type='submit'
-					className='text-16 bg-orange-1 py-4 font-bold text-white-1'
+					className='text-16 bg-orange-1 py-4 font-bold text-white-1
+          '
 					onClick={generatePodcast}
 				>
 					{isGenerating ? (
