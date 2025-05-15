@@ -99,10 +99,12 @@ export const getPodcastById = query({
 	},
 	handler: async (ctx, args) => {
 		const podcast = await ctx.db.get(args.podcastId)
-
 		return podcast
-			?.withIndex('userId', q => q.eq('userId', podcast.userId))
-			?.collect()
+		// const podcast = await ctx.db.get(args.podcastId)
+
+		// return podcast
+		// 	?.withIndex('userId', q => q.eq('userId', podcast.userId))
+		// 	?.collect()
 	},
 })
 

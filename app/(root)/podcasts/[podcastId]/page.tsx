@@ -1,18 +1,27 @@
 'use client'
 
+import LoaderSpinner from '@/components/LoaderSpinner'
 import PodcastDetailPlayer from '@/components/PodcastDetailPlayer'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { useQuery } from 'convex/react'
 import Image from 'next/image'
 import React from 'react'
+import { use } from 'react'
 
 const PodcastDetails = ({
-	params: { podcastId },
+	params,
 }: {
-	params: { podcastId: Id<'podcasts'> }
+	params: Promise<{ podcastId: Id<'podcasts'> }>
 }) => {
+	const { podcastId } = use(params)
 	const podcast = useQuery(api.podcasts.getPodcastById, { podcastId })
+
+	const similarPodcasts = useQuery(api.podcasts.getPodcastByVoiceType, {
+		podcastId,
+	})
+
+	if (!similarPodcasts || !podcast) return <LoaderSpinner />
 
 	return (
 		<section className='flex w-full flex-col'>
