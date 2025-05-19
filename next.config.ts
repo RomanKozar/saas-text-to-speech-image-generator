@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
 				protocol: 'https',
 				hostname: 'fortunate-mouse-969.convex.cloud',
 			},
+			{
+				protocol: 'https',
+				hostname: 'img.clerk.com',
+			},
 		],
 	},
 }
