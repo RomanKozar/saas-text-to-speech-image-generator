@@ -49,7 +49,7 @@ const RightSidebar = () => {
 							className='flex cursor-pointer justify-between'
 							onClick={() => router.push(`/profile/${podcaster.clerkId}`)}
 						>
-							<figure className='flex items-center'>
+							<figure className='flex items-center gap-2'>
 								<Image
 									src={podcaster.imageUrl}
 									alt={podcaster.name}

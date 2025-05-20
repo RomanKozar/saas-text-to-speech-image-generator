@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { api } from '@/convex/_generated/api'
-//import { useAudio } from '@/providers/AudioProvider'
+import { useAudio } from '@/providers/AudioProvider'
 import { PodcastDetailPlayerProps } from '@/types'
 
 import LoaderSpinner from './LoaderSpinner'
@@ -14,7 +14,7 @@ import { useToast } from '@/hooks/use-toast'
 
 const PodcastDetailPlayer = ({
 	audioUrl,
-	title,
+	podcastTitle,
 	author,
 	imageUrl,
 	podcastId,
@@ -25,7 +25,7 @@ const PodcastDetailPlayer = ({
 	authorId,
 }: PodcastDetailPlayerProps) => {
 	const router = useRouter()
-	//const { setAudio } = useAudio()
+	const { setAudio } = useAudio()
 	const { toast } = useToast()
 	const [isDeleting, setIsDeleting] = useState(false)
 	const deletePodcast = useMutation(api.podcasts.deletePodcast)
@@ -47,13 +47,13 @@ const PodcastDetailPlayer = ({
 	}
 
 	const handlePlay = () => {
-		// setAudio({
-		// 	title,
-		// 	audioUrl,
-		// 	imageUrl,
-		// 	author,
-		// 	podcastId,
-		// })
+		setAudio({
+			podcastTitle,
+			audioUrl,
+			imageUrl,
+			author,
+			podcastId,
+		})
 	}
 
 	if (!imageUrl || !authorImageUrl) return <LoaderSpinner />
@@ -71,7 +71,7 @@ const PodcastDetailPlayer = ({
 				<div className='flex w-full flex-col gap-5 max-md:items-center md:gap-9'>
 					<article className='flex flex-col gap-2 max-md:items-center'>
 						<h1 className='text-32 font-extrabold tracking-[-0.32px] text-white-1'>
-							{title}
+							{podcastTitle}
 						</h1>
 						<figure
 							className='flex cursor-pointer items-center gap-2'
