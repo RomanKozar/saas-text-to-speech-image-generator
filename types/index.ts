@@ -20,7 +20,7 @@ export interface TopPodcastersProps {
 	name: string
 	podcast: {
 		title: string
-		pocastId: Id<'podcasts'>
+		podcastId: Id<'podcasts'>
 	}[]
 	totalPodcasts: number
 }
@@ -30,9 +30,8 @@ export interface PodcastProps {
 	_creationTime: number
 	audioStorageId: Id<'_storage'> | null
 	userId: Id<'users'>
+	title: string
 	description: string
-	podcastTitle: string
-	podcastDescription: string
 	audioUrl: string | null
 	imageUrl: string | null
 	imageStorageId: Id<'_storage'> | null
@@ -51,7 +50,7 @@ export interface ProfilePodcastProps {
 	listeners: number
 }
 
-export type VoiceType = 'en-US-Wavenet-D' | 'en-US-Wavenet-F'
+export type VoiceType = 'alloy' | 'echo' | 'fable' | 'onyx' | 'nova' | 'shimmer'
 
 export interface GeneratePodcastProps {
 	voiceType: VoiceType
@@ -84,7 +83,6 @@ export interface LatestPodcastCardProps {
 
 export interface PodcastDetailPlayerProps {
 	audioUrl: string
-	podcastTitle: string
 	title: string
 	author: string
 	isOwner: boolean
@@ -110,7 +108,7 @@ export interface AudioContextType {
 }
 
 export interface PodcastCardProps {
-	imgUrl: string
+	img: string
 	title: string
 	description: string
 	podcastId: Id<'podcasts'>

@@ -37,8 +37,8 @@ export const getTopUserByPodcastCount = query({
 					...u,
 					totalPodcasts: podcasts.length,
 					podcast: sortedPodcasts.map(p => ({
-						title: p.title,
-						pocastId: p._id,
+						title: p.podcastTitle,
+						podcastId: p._id,
 					})),
 				}
 			})

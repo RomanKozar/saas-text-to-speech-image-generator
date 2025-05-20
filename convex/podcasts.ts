@@ -8,8 +8,8 @@ import { mutation, query } from './_generated/server'
 export const createPodcast = mutation({
 	args: {
 		audioStorageId: v.id('_storage'),
-		title: v.string(),
-		description: v.string(),
+		podcastTitle: v.string(),
+		podcastDescription: v.string(),
 		audioUrl: v.string(),
 		imageUrl: v.string(),
 		imageStorageId: v.id('_storage'),
@@ -37,15 +37,15 @@ export const createPodcast = mutation({
 
 		return await ctx.db.insert('podcasts', {
 			audioStorageId: args.audioStorageId,
-			userId: user[0]._id,
-			title: args.title,
-			description: args.description,
+			user: user[0]._id,
+			podcastTitle: args.podcastTitle,
+			podcastDescription: args.podcastDescription,
 			audioUrl: args.audioUrl,
 			imageUrl: args.imageUrl,
 			imageStorageId: args.imageStorageId,
-			// author: user[0].name,
-			// authorId: user[0].clerkId,
-			// authorImageUrl: user[0].imageUrl,
+			author: user[0].name,
+			authorId: user[0].clerkId,
+			authorImageUrl: user[0].imageUrl,
 			voicePrompt: args.voicePrompt,
 			imagePrompt: args.imagePrompt,
 			voiceType: args.voiceType,
