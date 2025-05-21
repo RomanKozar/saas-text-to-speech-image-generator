@@ -19,7 +19,7 @@ export interface TopPodcastersProps {
 	clerkId: string
 	name: string
 	podcast: {
-		title: string
+		podcastTitle: string
 		podcastId: Id<'podcasts'>
 	}[]
 	totalPodcasts: number
@@ -30,8 +30,8 @@ export interface PodcastProps {
 	_creationTime: number
 	audioStorageId: Id<'_storage'> | null
 	userId: Id<'users'>
-	title: string
-	description: string
+	podcastTitle: string
+	podcastDescription: string
 	audioUrl: string | null
 	imageUrl: string | null
 	imageStorageId: Id<'_storage'> | null
@@ -95,7 +95,7 @@ export interface PodcastDetailPlayerProps {
 }
 
 export interface AudioProps {
-	podcastTitle: string
+	title: string //перевірити
 	audioUrl: string
 	author: string
 	imageUrl: string

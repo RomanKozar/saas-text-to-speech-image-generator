@@ -100,9 +100,9 @@ const PodcastPlayer = () => {
 			})}
 		>
 			<Progress
-				value={(currentTime / duration) * 100}
+				value={duration > 0 ? (currentTime / duration) * 100 : 0}
 				className='w-full'
-				max={duration}
+				max={duration > 0 ? duration : 1}
 			/>
 			<section className='glassmorphism-black flex h-[112px] w-full items-center justify-between px-4 max-md:justify-center max-md:gap-5 md:px-12'>
 				<audio

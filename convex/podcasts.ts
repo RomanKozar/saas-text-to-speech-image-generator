@@ -12,7 +12,7 @@ export const createPodcast = mutation({
 		podcastDescription: v.string(),
 		audioUrl: v.string(),
 		imageUrl: v.string(),
-		imageStorageId: v.id('_storage'),
+		imageStorageId: v.union(v.id('_storage'), v.null()),
 		voicePrompt: v.string(),
 		imagePrompt: v.string(),
 		voiceType: v.string(),
@@ -93,18 +93,27 @@ export const getAllPodcasts = query({
 })
 
 // цей запит отримає подкаст за ідентифікатором podcastId
+// export const getPodcastById = query({
+// 	args: {
+// 		podcastId: v.id('podcasts'),
+// 	},
+// 	handler: async (ctx, args) => {
+// 		const podcast = await ctx.db.get(args.podcastId)
+// 		return podcast
+// 		// const podcast = await ctx.db.get(args.podcastId)
+
+// 		// return podcast
+// 		// 	?.withIndex('userId', q => q.eq('userId', podcast.userId))
+// 		// 	?.collect()
+// 	},
+// })
 export const getPodcastById = query({
+	//перевірити
 	args: {
 		podcastId: v.id('podcasts'),
 	},
 	handler: async (ctx, args) => {
-		const podcast = await ctx.db.get(args.podcastId)
-		return podcast
-		// const podcast = await ctx.db.get(args.podcastId)
-
-		// return podcast
-		// 	?.withIndex('userId', q => q.eq('userId', podcast.userId))
-		// 	?.collect()
+		return await ctx.db.get(args.podcastId)
 	},
 })
 
@@ -120,18 +129,16 @@ export const getTrendingPodcasts = query({
 // TODO
 export const getPodcastByAuthorId = query({
 	args: {
-		authorId: v.id('users'),
+		authorId: v.string(),
 	},
 	handler: async (ctx, args) => {
-		const user = await ctx.db.get(args.authorId)
-		// const podcasts = await ctx.db
-		//   .query("podcasts")
-		//   .filter((q) => q.eq(q.field("userId"), args.authorId))
-		//   .collect();
-		const podcasts = user?.podcastIds.map(ctx.db.get)
+		const podcasts = await ctx.db
+			.query('podcasts')
+			.filter(q => q.eq(q.field('authorId'), args.authorId))
+			.collect()
 
-		const totalListeners = podcasts?.reduce(
-			(sum, podcast) => sum + podcast?.views,
+		const totalListeners = podcasts.reduce(
+			(sum, podcast) => sum + podcast.views,
 			0
 		)
 
@@ -147,6 +154,15 @@ export const getPodcastBySearch = query({
 	handler: async (ctx, args) => {
 		if (args.search === '') {
 			return await ctx.db.query('podcasts').order('desc').collect()
+		}
+
+		const authorSearch = await ctx.db //перевірити
+			.query('podcasts')
+			.withSearchIndex('search_author', q => q.search('author', args.search))
+			.take(10)
+
+		if (authorSearch.length > 0) {
+			return authorSearch
 		}
 
 		const titleSearch = await ctx.db

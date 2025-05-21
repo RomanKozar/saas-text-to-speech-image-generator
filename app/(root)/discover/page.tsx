@@ -12,7 +12,7 @@ import { useSearchParams } from 'next/navigation'
 const Discover = () => {
 	const searchParams = useSearchParams()
 	const search = searchParams.get('search') || ''
-	const podcastData = useQuery(api.podcasts.getPodcastBySearch, { search })
+	const podcastsData = useQuery(api.podcasts.getPodcastBySearch, { search })
 
 	return (
 		<div className='flex flex-col gap-9'>
@@ -22,21 +22,19 @@ const Discover = () => {
 					{!search ? 'Discover Trending Podcasts' : 'Search result for:'}
 					{search && <span className='text-white-2'>{search}</span>}
 				</h1>
-				{podcastData ? ( // тут потрібно розібратися з podcastData
+				{podcastsData ? ( // тут потрібно розібратися з podcastData
 					<>
-						{podcastData.length > 0 ? (
+						{podcastsData.length > 0 ? (
 							<div className='podcast_grid'>
-								{podcastData?.map(
-									({ _id, podcastTitle, podcastDescription, imageUrl }) => (
-										<PodcastCard
-											key={_id}
-											imgUrl={imageUrl!}
-											title={podcastTitle}
-											description={podcastDescription}
-											podcastId={_id}
-										/>
-									)
-								)}
+								{podcastsData?.map(podcast => (
+									<PodcastCard
+										key={podcast._id}
+										imgUrl={podcast.imageUrl!}
+										title={podcast.podcastTitle}
+										description={podcast.podcastDescription}
+										podcastId={podcast._id}
+									/>
+								))}
 							</div>
 						) : (
 							<EmptyState title='No results found' />
