@@ -99,7 +99,6 @@ const PodcastPlayer = () => {
 				hidden: !audio?.audioUrl || audio?.audioUrl === '',
 			})}
 		>
-			{/* змініть колір індикатора всередині компонента Progress у папці ui */}
 			<Progress
 				value={(currentTime / duration) * 100}
 				className='w-full'
