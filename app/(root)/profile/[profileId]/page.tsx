@@ -42,7 +42,7 @@ const ProfilePage = ({
 				<h1 className='text-20 font-bold text-white-1'>All Podcasts</h1>
 				{podcastsData.podcasts.length > 0 ? (
 					<div className='podcast_grid'>
-						{podcastsData.podcasts.slice(0, 4).map(podcast => (
+						{podcastsData.podcasts.slice(0, 8).map(podcast => (
 							<PodcastCard
 								key={podcast._id}
 								imgUrl={podcast.imageUrl!}

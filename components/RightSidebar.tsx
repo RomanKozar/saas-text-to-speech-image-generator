@@ -31,7 +31,7 @@ const RightSidebar = () => {
 					<UserButton />
 					<div className='flex w-full items-center justify-between'>
 						<h1 className='text-16 truncate font-semibold text-white-1'>
-							{user?.firstName} {user?.lastName}
+							{`${user?.firstName}`} {user?.lastName && `${user?.lastName}`}
 						</h1>
 						<Image
 							src='/icons/right-arrow.svg'
@@ -58,7 +58,7 @@ const RightSidebar = () => {
 							<figure className='flex items-center gap-2'>
 								<Image
 									src={podcaster.imageUrl}
-									alt={podcaster.name}
+									alt='casters'
 									width={44}
 									height={44}
 									className='aspect-square rounded-lg'
